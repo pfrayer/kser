@@ -29,23 +29,15 @@ class Consumer(object):
         self.clean_lock()
 
     def __del__(self):
-        # noinspection PyTypeChecker
+        self.clean_lock()
+
+    @staticmethod
+    def clean_lock():
+        """Remove pause & running lock files"""
         for lockfile in (os.environ['LOCK_FILE'], os.environ['RUNNING_FILE']):
             if os.path.exists(lockfile):
                 logger.debug("Cleaning existing lock file: {}".format(lockfile))
                 os.remove(lockfile)
-
-    @staticmethod
-    def clean_lock():
-        """Remove lock file"""
-        # noinspection PyTypeChecker
-        if os.path.exists(os.environ['LOCK_FILE']):
-            # noinspection PyTypeChecker
-            logger.debug("Cleaning existing pause file: {}".format(
-                os.environ['LOCK_FILE']
-            ))
-            # noinspection PyTypeChecker
-            os.remove(os.environ['LOCK_FILE'])
 
     @staticmethod
     def is_active():
