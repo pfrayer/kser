@@ -53,11 +53,10 @@ class Task(Entrypoint):
             self.__class__.__name__, self.status, self.__class__.path,
             self.uuid, message
         )
-        extra = kwargs.pop("extra", dict())
-        extra.update(dict(kmsg=Message(
-            self.uuid, entrypoint=self.__class__.path, params=self.params,
-            metadata=self.metadata
-        ).dump()))
+        extra={
+            "kmsg_entrypoint": self.__class__.path,
+            "kmsg_uuid": self.uuid,
+        }
 
         return logger.log(
             level=level, msg=msg, extra=extra, *args, **kwargs

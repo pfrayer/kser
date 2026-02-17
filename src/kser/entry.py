@@ -79,13 +79,10 @@ class Entrypoint(object, metaclass=EntrypointMeta):
             "{}.Success: {}[{}]: {}".format(
                 self.__class__.__name__, self.__class__.path, self.uuid, result
             ),
-            extra=dict(
-                kmsg=Message(
-                    self.uuid, entrypoint=self.__class__.path,
-                    params=self.params, metadata=self.metadata
-                ).dump(),
-                kresult=ResultSchema().dump(result) if result else dict()
-            )
+            extra={
+                "kmsg_entrypoint": self.__class__.path,
+                "kmsg_uuid": self.uuid,
+            }
         )
         return self.onsuccess(result)
 
@@ -122,13 +119,10 @@ class Entrypoint(object, metaclass=EntrypointMeta):
         else:
             result = self.result
 
-        extra = dict(
-            kmsg=Message(
-                self.uuid, entrypoint=self.__class__.path,
-                params=self.params, metadata=self.metadata
-            ).dump(),
-            kresult=ResultSchema().dump(result) if result else dict()
-        )
+        extra={
+            "kmsg_entrypoint": self.__class__.path,
+            "kmsg_uuid": self.uuid,
+        }
 
         if result:
             error = result.search_value("error")
@@ -161,12 +155,10 @@ class Entrypoint(object, metaclass=EntrypointMeta):
             "{}.PreRun: {}[{}]".format(
                 self.__class__.__name__, self.__class__.path, self.uuid
             ),
-            extra=dict(
-                kmsg=Message(
-                    self.uuid, entrypoint=self.__class__.path,
-                    params=self.params, metadata=self.metadata
-                ).dump()
-            )
+            extra={
+                "kmsg_entrypoint": self.__class__.path,
+                "kmsg_uuid": self.uuid,
+            }
         )
         self.check_required_params()
         return self.prerun()
@@ -185,12 +177,10 @@ class Entrypoint(object, metaclass=EntrypointMeta):
             "{}.PostRun: {}[{}]".format(
                 self.__class__.__name__, self.__class__.path, self.uuid
             ),
-            extra=dict(
-                kmsg=Message(
-                    self.uuid, entrypoint=self.__class__.path,
-                    params=self.params, metadata=self.metadata
-                ).dump()
-            )
+            extra={
+                "kmsg_entrypoint": self.__class__.path,
+                "kmsg_uuid": self.uuid,
+            }
         )
         return self.postrun(result)
 
@@ -216,12 +206,10 @@ class Entrypoint(object, metaclass=EntrypointMeta):
             "{}.Run: {}[{}]".format(
                 self.__class__.__name__, self.__class__.path, self.uuid
             ),
-            extra=dict(
-                kmsg=Message(
-                    self.uuid, entrypoint=self.__class__.path,
-                    params=self.params, metadata=self.metadata
-                ).dump()
-            )
+            extra={
+                "kmsg_entrypoint": self.__class__.path,
+                "kmsg_uuid": self.uuid,
+            }
         )
         return self.run()
 

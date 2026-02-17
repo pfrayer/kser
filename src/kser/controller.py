@@ -37,10 +37,10 @@ class BaseController(object):
             "{}.Success: {}[{}]: {}".format(
                 cls.__name__, kmsg.entrypoint, kmsg.uuid, result
             ),
-            extra=dict(
-                kmsg=kmsg.dump(),
-                kresult=ResultSchema().dump(result) if result else dict()
-            )
+            extra={
+                "kmsg_entrypoint": kmsg.entrypoint,
+                "kmsg_uuid": kmsg.uuid,
+            }
         )
         return cls.onsuccess(kmsg, result)
 
@@ -69,10 +69,10 @@ class BaseController(object):
             "{}.Failed: {}[{}]: {}".format(
                 cls.__name__, kmsg.entrypoint, kmsg.uuid, result
             ),
-            extra=dict(
-                kmsg=kmsg.dump(),
-                kresult=ResultSchema().dump(result) if result else dict()
-            )
+            extra={
+                "kmsg_entrypoint": kmsg.entrypoint,
+                "kmsg_uuid": kmsg.uuid,
+            }
         )
         return cls.onerror(kmsg, result)
 
@@ -100,7 +100,10 @@ class BaseController(object):
             "{}.ReceivedMessage {}[{}]".format(
                 cls.__name__, kmsg.entrypoint, kmsg.uuid
             ),
-            extra=dict(kmsg=kmsg.dump())
+            extra={
+                "kmsg_entrypoint": kmsg.entrypoint,
+                "kmsg_uuid": kmsg.uuid,
+            }
         )
         return cls.onmessage(kmsg)
 
